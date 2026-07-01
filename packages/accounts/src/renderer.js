@@ -83,7 +83,6 @@ function activate(context) {
   async function switchAccount(id) {
     try {
       await bridge.codexbarSwitchAccount(id);
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }

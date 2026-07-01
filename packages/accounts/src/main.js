@@ -220,6 +220,21 @@ function restoreLiveFromRegistry() {
   return account;
 }
 
+function relaunchAppSoon(electron, delay = 250) {
+  setTimeout(() => {
+    try {
+      electron.app?.relaunch?.();
+      electron.app?.exit?.(0);
+    } catch {
+      try {
+        for (const window of electron.BrowserWindow.getAllWindows()) {
+          window.webContents.reloadIgnoringCache();
+        }
+      } catch {}
+    }
+  }, delay);
+}
+
 function preserveLive(registry, targetIdentity) {
   const fs = require("node:fs");
   const path = require("node:path");
@@ -377,7 +392,7 @@ function activate(context) {
     cleanup,
   } = context;
   const restored = restoreLiveFromRegistry();
-  if (restored) reloadWindowsSoon();
+  if (restored) relaunchAppSoon(electron);
   const handlers = [
     ["codex_desktop:accounts-list", async (event) => {
       if (!isTrustedIpcEvent(event)) return { accounts: [] };
@@ -391,7 +406,7 @@ function activate(context) {
     ["codex_desktop:accounts-switch", async (event, accountId) => {
       if (!isTrustedIpcEvent(event)) throw Error("Untrusted sender");
       const result = await switchAccount(accountId);
-      reloadWindowsSoon();
+      relaunchAppSoon(electron);
       return result;
     }],
     ["codex_desktop:accounts-logout-current", async (event) => {
