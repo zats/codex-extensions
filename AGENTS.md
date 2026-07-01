@@ -57,7 +57,16 @@ Release assets are immutable. Never replace an uploaded zip. Publish a new versi
    gh release create {id}-v{version} {id}-{version}.zip --title {id}-v{version} --notes "{short release note}"
    ```
 
-5. Download the uploaded asset and compute SHA-256 from the downloaded file.
+5. Download the uploaded asset and compute SHA-256 from the downloaded file:
+
+   ```sh
+   tmpdir=$(mktemp -d)
+   gh release download {id}-v{version} --pattern {id}-{version}.zip --dir "$tmpdir" --clobber
+   shasum -a 256 "$tmpdir/{id}-{version}.zip"
+   trash "$tmpdir"
+   ```
+
+   Copy only the first field from `shasum`; that is the `sha256` value.
 6. Update `packages/{id}/manifest.json`:
    - `version`
    - `assetURL`
