@@ -6,6 +6,6 @@
   "packagePath": "packages/accounts",
   "latestVersion": "1.0.0",
   "codexVersionRange": ">=26.623.42026 <27.0.0",
-  "assetURL": null,
-  "sha256": null
+  "assetURL": "https://github.com/zats/codex-extensions/releases/download/accounts-v1.0.0/accounts-1.0.0.zip",
+  "sha256": "c48dfe03a49233c4844fa5e60d68c0b0897761061af5d2272279c865a5279de5"
 }
