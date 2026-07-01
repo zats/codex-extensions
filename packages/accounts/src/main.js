@@ -343,9 +343,7 @@ function activate(context) {
     }],
     ["codex_desktop:accounts-add", async (event) => {
       if (!isTrustedIpcEvent(event)) throw Error("Untrusted sender");
-      const result = await prepareAddAccount();
-      reloadWindowsSoon();
-      return result;
+      return prepareAddAccount();
     }],
     ["codex_desktop:accounts-switch", async (event, accountId) => {
       if (!isTrustedIpcEvent(event)) throw Error("Untrusted sender");
