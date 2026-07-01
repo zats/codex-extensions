@@ -1,0 +1,11 @@
+{
+  "id": "accounts",
+  "name": "Accounts",
+  "description": "Switch between OpenAI accounts right from the app menu.",
+  "repo": "zats/codex-extensions",
+  "packagePath": "packages/accounts",
+  "latestVersion": "1.0.0",
+  "codexVersionRange": ">=26.623.42026 <27.0.0",
+  "assetURL": null,
+  "sha256": null
+}

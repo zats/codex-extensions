@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "extensions": [
+    {
+      "id": "accounts",
+      "name": "Accounts",
+      "latestVersion": "1.0.0",
+      "manifest": "extensions/accounts.json"
+    },
+    {
+      "id": "colors",
+      "name": "Colors",
+      "latestVersion": "1.0.0",
+      "manifest": "extensions/colors.json"
+    }
+  ]
+}

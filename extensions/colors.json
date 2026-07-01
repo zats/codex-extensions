@@ -1,0 +1,11 @@
+{
+  "id": "colors",
+  "name": "Colors",
+  "description": "Color-code Codex threads.",
+  "repo": "zats/codex-extensions",
+  "packagePath": "packages/colors",
+  "latestVersion": "1.0.0",
+  "codexVersionRange": ">=26.623.42026 <27.0.0",
+  "assetURL": null,
+  "sha256": null
+}

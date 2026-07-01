@@ -1,0 +1,12 @@
+{
+  "id": "colors",
+  "name": "Colors",
+  "description": "Color-code Codex threads.",
+  "version": "1.0.0",
+  "codexVersionRange": ">=26.623.42026 <27.0.0",
+  "entrypoints": {
+    "main": "src/main.js",
+    "preload": "src/preload.js",
+    "renderer": "src/renderer.js"
+  }
+}
