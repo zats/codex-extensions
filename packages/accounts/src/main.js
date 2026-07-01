@@ -190,6 +190,36 @@ function accountRows() {
   };
 }
 
+function accountManagedHomePath(account) {
+  const path = require("node:path");
+  const p = paths();
+  return account.managedHomePath ?? account.homePath ?? account.codexHomePath ?? path.join(p.homes, account.id);
+}
+
+function accountSortTime(account) {
+  return Date.parse(account.lastAuthenticatedAt ?? account.updatedAt ?? account.createdAt ?? "") || 0;
+}
+
+function restoreLiveFromRegistry() {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const crypto = require("node:crypto");
+  const p = paths();
+  if (readFile(p.liveAuth)) return null;
+  const registry = readRegistry();
+  const account = [...registry.accounts]
+    .sort((left, right) => accountSortTime(right) - accountSortTime(left))
+    .find((entry) => readFile(path.join(accountManagedHomePath(entry), "auth.json")));
+  if (!account) return null;
+  fs.mkdirSync(p.liveHome, { recursive: true });
+  const source = path.join(accountManagedHomePath(account), "auth.json");
+  const staged = path.join(p.liveHome, `auth.json.accounts-restore-${crypto.randomUUID()}`);
+  fs.copyFileSync(source, staged);
+  fs.chmodSync(staged, 0o600);
+  fs.renameSync(staged, p.liveAuth);
+  return account;
+}
+
 function preserveLive(registry, targetIdentity) {
   const fs = require("node:fs");
   const path = require("node:path");
@@ -308,7 +338,18 @@ async function logoutCurrentAccount(trashItem) {
   if (currentIndex < 0) return { ...accountRows(), fallback: true };
   const current = registry.accounts[currentIndex];
   const remaining = registry.accounts.filter((_, index) => index !== currentIndex);
-  if (remaining.length === 0) return { ...accountRows(), fallback: true };
+  if (remaining.length === 0) {
+    writeRegistry(registry, remaining);
+    const removedHome =
+      current.managedHomePath ??
+      current.homePath ??
+      current.codexHomePath ??
+      path.join(p.homes, current.id);
+    try {
+      if (typeof trashItem === "function") await trashItem(removedHome);
+    } catch {}
+    return { ...accountRows(), fallback: true };
+  }
   const switched = await switchAccount(remaining[0].id, { skipPreserveLive: true });
   writeRegistry(registry, remaining);
   const removedHome =
@@ -335,6 +376,8 @@ function activate(context) {
     reloadWindowsSoon,
     cleanup,
   } = context;
+  const restored = restoreLiveFromRegistry();
+  if (restored) reloadWindowsSoon();
   const handlers = [
     ["codex_desktop:accounts-list", async (event) => {
       if (!isTrustedIpcEvent(event)) return { accounts: [] };
