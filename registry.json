@@ -4,14 +4,12 @@
     {
       "id": "accounts",
       "name": "Accounts",
-      "latestVersion": "1.0.0",
-      "manifest": "extensions/accounts.json"
+      "manifest": "packages/accounts/manifest.json"
     },
     {
       "id": "colors",
       "name": "Colors",
-      "latestVersion": "1.0.0",
-      "manifest": "extensions/colors.json"
+      "manifest": "packages/colors/manifest.json"
     }
   ]
 }

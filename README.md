@@ -6,9 +6,6 @@ Community extension registry for Bibliotheca-managed Codex desktop extensions.
 
 ```text
 registry.json
-extensions/
-  accounts.json
-  colors.json
 packages/
   accounts/
     manifest.json
@@ -18,4 +15,4 @@ packages/
     src/
 ```
 
-`registry.json` is the small discovery index. Each `extensions/{id}.json` stores install and update metadata for one extension. Packaged extension assets are published through GitHub Releases.
+`registry.json` is the small discovery index. Each package manifest stores runtime, compatibility, and release metadata. Packaged extension assets are published through GitHub Releases.
