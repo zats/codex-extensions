@@ -86,8 +86,21 @@ Release assets are immutable. Never replace an uploaded zip. Publish a new versi
 
 ## Local Testing
 
-- Patch `/Users/zats/.codex/extensions/{id}/src/` only for immediate local testing.
+- Install the extension once through Codex so `/Users/zats/.codex/extensions/{id}` exists.
+- Patch only files under `/Users/zats/.codex/extensions/{id}/src/` for immediate local testing.
+- Relaunch Codex after each local patch when the extension runs in `main` or `preload`.
+- Test the behavior in Codex.
+- Copy the working changes back to `packages/{id}/src/`.
+- Validate the package source before publishing:
+
+  ```sh
+  node --check packages/{id}/src/main.js
+  node --check packages/{id}/src/preload.js
+  node --check packages/{id}/src/renderer.js
+  ```
+
 - Do not manually edit `/Users/zats/.codex/extensions/{id}/manifest.json` to fake an installed version.
+- Do not commit local test patches under `/Users/zats/.codex/extensions`.
 - After publishing, expect GitHub raw CDN to lag. Verify the source of truth with:
 
   ```sh
@@ -99,5 +112,4 @@ Release assets are immutable. Never replace an uploaded zip. Publish a new versi
 - Do not add fallback behavior unless requested.
 - Do not preserve compatibility with old registry shapes unless requested.
 - Do not put large metadata in `registry.json`.
-- Do not commit local test patches under `/Users/zats/.codex/extensions`.
 - Keep release zips free of `._*`, `.DS_Store`, and unrelated files.
