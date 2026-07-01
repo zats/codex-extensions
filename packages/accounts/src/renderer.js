@@ -92,7 +92,13 @@ function activate(context) {
   async function addAccount() {
     try {
       await bridge?.codexbarAddAccount?.();
-      window.location.reload();
+      const logout = findClickableByText("Log out");
+      if (logout) {
+        logout.dataset.accountsExtensionBypass = "true";
+        logout.click();
+      } else {
+        window.location.reload();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -176,6 +182,10 @@ function activate(context) {
       logout.addEventListener(
         "click",
         async (event) => {
+          if (logout.dataset.accountsExtensionBypass === "true") {
+            delete logout.dataset.accountsExtensionBypass;
+            return;
+          }
           event.preventDefault();
           event.stopImmediatePropagation();
           const handled = await logoutCurrentAccount();

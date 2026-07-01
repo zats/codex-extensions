@@ -251,19 +251,7 @@ function preserveLive(registry, targetIdentity) {
 }
 
 async function prepareAddAccount() {
-  const fs = require("node:fs");
-  const path = require("node:path");
-  const crypto = require("node:crypto");
-  const p = paths();
   preserveLive(readRegistry(), null);
-  try {
-    if (fs.existsSync(p.liveAuth)) {
-      fs.renameSync(
-        p.liveAuth,
-        path.join(p.liveHome, `auth.json.accounts-add-${crypto.randomUUID()}`),
-      );
-    }
-  } catch {}
   return accountRows();
 }
 
