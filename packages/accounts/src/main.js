@@ -223,7 +223,25 @@ function restoreLiveFromRegistry() {
 function relaunchAppSoon(electron, delay = 250) {
   setTimeout(() => {
     try {
-      electron.app?.relaunch?.();
+      const path = require("node:path");
+      const { spawn } = require("node:child_process");
+      const exePath = electron.app?.getPath?.("exe") ?? process.execPath;
+      const parts = exePath.split(path.sep);
+      const appIndex = parts.findIndex((part) => part.endsWith(".app"));
+      if (appIndex < 0) throw Error("Unable to locate app bundle");
+      const appPath = parts.slice(0, appIndex + 1).join(path.sep);
+      const child = spawn(
+        "/bin/sh",
+        [
+          "-c",
+          'pid="$1"; app="$2"; while kill -0 "$pid" 2>/dev/null; do sleep 0.2; done; /usr/bin/open "$app"',
+          "codex-accounts-relaunch",
+          String(process.pid),
+          appPath,
+        ],
+        { detached: true, stdio: "ignore" },
+      );
+      child.unref();
       electron.app?.exit?.(0);
     } catch {
       try {
