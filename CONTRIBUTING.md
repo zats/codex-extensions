@@ -41,16 +41,32 @@ Example:
 
 ## Publish a Version
 
-1. Update `packages/{id}/manifest.json` with the new version.
-2. Package the extension directory as `{id}-{version}.zip`.
-3. Create a GitHub Release.
-4. Upload the zip as a release asset.
-5. Compute the asset SHA-256.
-6. Update `packages/{id}/manifest.json`:
+1. Edit files under `packages/{id}`.
+2. Bump `packages/{id}/manifest.json` `version`.
+3. Build the release zip from a staged copy of `packages/{id}`. The manifest inside the zip should include runtime fields only; omit registry fields such as `assetURL` and `sha256`.
+
+   ```sh
+   COPYFILE_DISABLE=1 zip -X -r {id}-{version}.zip manifest.json src
+   ```
+
+4. Create the GitHub Release/tag `{id}-v{version}`.
+5. Upload `{id}-{version}.zip`.
+6. Compute SHA-256 for the exact uploaded zip:
+
+   ```sh
+   shasum -a 256 {id}-{version}.zip
+   ```
+
+7. Update `packages/{id}/manifest.json`:
    - `version`
    - `assetURL`
    - `sha256`
-7. Open a PR.
+8. Update `registry.json` entry `version`.
+9. Open a PR.
+
+`COPYFILE_DISABLE=1` prevents macOS `._*` files from being added to the archive.
+`zip -X` prevents extra filesystem metadata from being added to the archive.
+Release assets are immutable; publish a new version instead of replacing an asset.
 
 ## Update Rules
 
