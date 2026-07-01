@@ -55,7 +55,8 @@ Example:
 ## Update Rules
 
 - Release assets are immutable.
-- `registry.json` only points to package manifests.
+- `registry.json` entries only include `id`, `description`, and `version`.
+- Package manifests live at `packages/{id}/manifest.json`.
 - `assetURL` must point to a GitHub Release asset.
 - `sha256` must match the release asset.
 - `manifest.id` must match the registry id.

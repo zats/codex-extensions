@@ -3,13 +3,13 @@
   "extensions": [
     {
       "id": "accounts",
-      "name": "Accounts",
-      "manifest": "packages/accounts/manifest.json"
+      "description": "Switch between OpenAI accounts right from the app menu.",
+      "version": "1.0.0"
     },
     {
       "id": "colors",
-      "name": "Colors",
-      "manifest": "packages/colors/manifest.json"
+      "description": "Color-code Codex threads.",
+      "version": "1.0.0"
     }
   ]
 }

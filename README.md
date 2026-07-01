@@ -15,4 +15,4 @@ packages/
     src/
 ```
 
-`registry.json` is the small discovery index. Each package manifest stores runtime, compatibility, and release metadata. Packaged extension assets are published through GitHub Releases.
+`registry.json` is the small discovery and search index. Each package manifest lives at `packages/{id}/manifest.json` and stores runtime, compatibility, and release metadata. Packaged extension assets are published through GitHub Releases.
